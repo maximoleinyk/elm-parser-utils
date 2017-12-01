@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "summary": "Simple library for complicated text parsing",
     "repository": "https://github.com/maximoleinyk/elm-parser-utils.git",
     "license": "BSD3",

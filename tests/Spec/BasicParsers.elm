@@ -1,56 +1,9 @@
-module Spec.BasicParsers exposing (..)
+module Spec.BasicParsers exposing (mainTest)
 
 import BasicParsers exposing (..)
 import Expect
 import ParserUtils as PU
 import Test exposing (Test, describe, test)
-
-
-goodParse : PU.Parser a -> String -> Expect.Expectation
-goodParse parser source =
-    let
-        initialState =
-            PU.State
-                { source = source
-                , offset = 0
-                , tokens = []
-                }
-
-        result =
-            PU.apply initialState parser
-    in
-    case result of
-        Ok (PU.State { tokens }) ->
-            case List.head tokens of
-                Nothing ->
-                    Expect.fail "parse operation was successfull, however token was not added"
-
-                Just (PU.Token next) ->
-                    Expect.equal next.value source
-
-        Err x ->
-            Expect.fail "parser failed"
-
-
-badParse : PU.Parser a -> String -> Expect.Expectation
-badParse parser source =
-    let
-        initialState =
-            PU.State
-                { source = source
-                , offset = 0
-                , tokens = []
-                }
-
-        result =
-            PU.apply initialState parser
-    in
-    case result of
-        Ok (PU.State { tokens }) ->
-            Expect.fail "parsed successfully"
-
-        Err x ->
-            Expect.pass
 
 
 mainTest : Test
@@ -128,3 +81,50 @@ mainTest =
             , test "case 2" <| \() -> badParse (notSymbol 'a' ()) "a"
             ]
         ]
+
+
+goodParse : PU.Parser a -> String -> Expect.Expectation
+goodParse parser source =
+    let
+        initialState =
+            PU.State
+                { source = source
+                , offset = 0
+                , tokens = []
+                }
+
+        result =
+            PU.apply initialState parser
+    in
+    case result of
+        Ok (PU.State { tokens }) ->
+            case List.head tokens of
+                Nothing ->
+                    Expect.fail "parse operation was successfull, however token was not added"
+
+                Just (PU.Token next) ->
+                    Expect.equal next.value source
+
+        Err x ->
+            Expect.fail "parser failed"
+
+
+badParse : PU.Parser a -> String -> Expect.Expectation
+badParse parser source =
+    let
+        initialState =
+            PU.State
+                { source = source
+                , offset = 0
+                , tokens = []
+                }
+
+        result =
+            PU.apply initialState parser
+    in
+    case result of
+        Ok (PU.State { tokens }) ->
+            Expect.fail "parsed successfully"
+
+        Err x ->
+            Expect.pass
